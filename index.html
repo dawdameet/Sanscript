@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bhasha++</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css"
+    />
+    <style>
+      /* body {
+        margin: 0;
+        padding: 20px;
+        font-family: system-ui, sans-serif;
+        background: #1a1a1a;
+        color: #ffffff;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 10px;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      h1 {
+        color: #ff6b6b;
+        font-size: 2rem;
+      }
+
+      .playground {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .editor-container,
+      .output-container {
+        background: #2d2d2d;
+        border-radius: 8px;
+        padding: 15px;
+      }
+
+      .CodeMirror {
+        height: 300px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .output {
+        background: #1e1e1e;
+        color: #dcdcdc;
+        padding: 15px;
+        border-radius: 4px;
+        height: 300px;
+        overflow-y: auto;
+        font-family: monospace;
+        white-space: pre-wrap;
+      }
+
+      .controls {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        background: #4ecdc4;
+        color: #1a1a1a;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: bold;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+
+      .examples {
+        margin-top: 20px;
+      }
+
+      .keyword-list {
+        margin-top: 20px;
+        background: #2d2d2d;
+        padding: 20px;
+        border-radius: 8px;
+      }
+
+      .keyword-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+      }
+
+      .keyword-item {
+        background: #1e1e1e;
+        padding: 8px;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .cm-keyword {
+        color: #66cc00;
+        font-weight: bold;
+      }
+      .cm-number {
+        color: #54a0ff;
+      }
+      .cm-string {
+        color: #feca57;
+      }
+      .cm-comment {
+        color: #576574;
+        font-style: italic;
+      }
+      .cm-operator {
+        color: #ff6b6b;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        .playground {
+          grid-template-columns: 1fr;
+        }
+
+        .CodeMirror,
+        .output {
+          height: 250px;
+        }
+
+        button {
+          padding: 10px;
+          font-size: 0.9rem;
+          flex: 1 0 calc(50% - 10px);
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        .CodeMirror,
+        .output {
+          height: 200px;
+        }
+
+        button {
+          font-size: 0.8rem;
+          padding: 8px;
+        }
+      } */
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+body {
+  background: #212121;
+  color: #ffffff;
+  margin: 0;
+  padding: 20px;
+  font-family: "Montserrat", sans-serif;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+h1 {
+  color: #ffd700;
+  font-size: 2rem;
+}
+.playground {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.editor-container,
+.output-container {
+  background: #333333;
+  border-radius: 8px;
+  padding: 15px;
+}
+.CodeMirror {
+  height: 300px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.output {
+  background: #333333;
+  color: #c5c5c5;
+  padding: 15px;
+  border-radius: 4px;
+  height: 300px;
+  overflow-y: auto;
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+button {
+  background: #66cc00;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+button:hover {
+  background: #444444;
+  opacity: 0.9;
+  transition: 0.176s;
+}
+.examples {
+  margin-top: 20px;
+}
+.keyword-list {
+  margin-top: 20px;
+  background: #2d2d2d;
+  padding: 20px;
+  border-radius: 8px;
+}
+.keyword-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.keyword-item {
+  background: #1e1e1e;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+/* @media (max-width: 768px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .playground {
+    grid-template-columns: 1fr;
+  }
+
+  .CodeMirror,
+  .output {
+    height: 250px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 0.9rem;
+    flex: 1 0 calc(50% - 10px);
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .CodeMirror,
+  .output {
+    height: 200px;
+  }
+
+  button {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
+} */
+@media (max-width: 768px) {
+  .container {
+    max-width: 95%; /* Make container slightly wider on mobile */
+    padding: 0 10px;
+    margin: 0 auto; /* Center the entire container */
+  }
+
+  .playground {
+    grid-template-columns: 1fr;
+    max-width: 100%; /* Ensure full width */
+    margin: 0 auto; /* Center the grid */
+  }
+
+  .editor-container,
+  .output-container {
+    width: 100%; /* Full width */
+    margin: 0 auto; /* Center individual containers */
+  }
+
+  .controls {
+    justify-content: center; /* Center control buttons */
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 5px; /* Slightly less padding on smaller screens */
+  }
+
+  .playground {
+    gap: 10px; /* Reduce gap between editor and output */
+  }
+}
+
+      .cm-keyword {
+        color: #ff6b6b; /* Custom color for keywords */
+        font-weight: bold;
+      }
+
+      .cm-string {
+        color: #feca57; /* Custom color for strings */
+      }
+
+      .cm-number {
+        color: #54a0ff; /* Custom color for numbers */
+      }
+
+      .cm-comment {
+        color: #576574; /* Custom color for comments */
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <!-- <img src="./logo.png" alt="logo"> -->
+        <h1>Sanscript 🕉️</h1>
+        <p>Ha bhai maine hi banai hai</p>
+      </header>
+
+      <div class="playground">
+        <div class="editor-container">
+          <div id="editor"></div>
+          <div class="controls">
+            <button onclick="runCode()">Run Code</button>
+            <button onclick="clearOutput()">Clear Output</button>
+          </div>
+        </div>
+        <div class="output-container">
+          <div class="output" id="output"></div>
+        </div>
+      </div>
+
+      <div class="examples">
+        <h2>Examples</h2>
+        <div class="controls">
+          <button onclick="loadExample('init')">Begin here</button>
+          <button onclick="loadExample('basic')">Basic Example</button>
+          <button onclick="loadExample('factorial')">Factorial</button>
+          <button onclick="loadExample('fibonacci')">Fibonacci</button>
+        </div>
+      </div>
+
+      <div class="keyword-list">
+        <h2>Language Reference 📚</h2>
+        <div class="keyword-grid" id="keywordGrid"></div>
+      </div>
+
+
+      <footer style="
+    margin-top: 2rem;
+    text-align: center;
+    padding: 20px;
+    background-color: #2d2d2d;
+    border-radius: 8px;
+    color: #ffd700;
+">
+    <p>Crafted with 💖 by Meet Dawda</p>
+    <a href="https://github.com/dawda_meet" style="
+        color: #66cc00;
+        text-decoration: none;
+        font-weight: bold;
+    ">
+        @dawda_meet
+    </a>
+    <p>This is entirely a javascript wrapper and not to be taken seriously! </p>
+</footer>
+    </div>
+    <script src="./scripts/inerpreter.js"></script>
+    <script>
+      const compiler = new GenZHindiCompiler();
+
+      CodeMirror.defineMode("genzHindi", function () {
+        return {
+          startState: function () {
+            return {};
+          },
+          token: function (stream, state) {
+            if (stream.match("//")) {
+              stream.skipToEnd();
+              return "comment";
+            }
+
+            // Handle strings
+            if (stream.match(/"[^"]*"/) || stream.match(/'[^']*'/)) {
+              return "string";
+            }
+
+            // Handle numbers
+            if (stream.match(/^[0-9]+(\.[0-9]+)?/)) {
+              return "number";
+            }
+
+            // Handle keywords
+            if (
+              stream.match(
+                /\b(kriya|darsha|vapas|yadi|sanchay|nishchit|yathakaal|yaavat|bhed|nirantar|satya|asatya|tulya|bhinna|samaan|laghu|dirgha)\b/
+              )
+            ) {
+              return "keyword";
+            }
+
+            // Handle operators
+            if (stream.match(/^[+\-*/=<>!]+/)) {
+              return "operator";
+            }
+
+            // Move to the next token if no matches
+            stream.next();
+            return null; // No specific styling
+          },
+        };
+      });
+
+      // Initialize the editor with the custom mode
+      const editor = CodeMirror(document.getElementById("editor"), {
+        mode: "genzHindi",
+        lineNumbers: true,
+        theme: "monokai",
+        autoCloseBrackets: true,
+        tabSize: 2,
+      });
+
+      editor.on("keydown", (cm, event) => {
+        if (event.ctrlKey && event.key === "Enter") {
+          event.preventDefault(); // Prevent default browser behavior
+          runCode(); // Execute the code
+        }
+      });
+      console.log(CodeMirror.version);
+      const initialCode = `
+//सन्स्कृप्त मे आप का हार्दिक स्वागत है 
+
+kriya Namastute() {
+    darsha("Pranaam!");
+    sanchay count samaan 0;
+    yathakaal (count laghu 3) {
+        darsha("Count:" + count);
+        count samaan count + 1;
+    }
+}
+Namastute();
+`;
+      editor.setValue(initialCode);
+      const output = document.getElementById("output");
+      const originalLog = console.log;
+      console.log = function (...args) {
+        output.innerHTML += args.join(" ") + "\n";
+        originalLog.apply(console, args);
+      };
+      // function runCode() {
+      //   output.innerHTML = "";
+      //   const code = editor.getValue();
+
+      //   try {
+      //     const result = compiler.execute(code);
+      //     if (result.compiledCode) {
+      //       // console.log("Compiled JavaScript:\n");
+      //       // console.log(result.compiledCode);
+      //       // console.log("\nOutput:\n");
+      //     }
+      //     if (result.error) {
+      //       console.log("Error:", result.error);
+      //     }
+      //   } catch (error) {
+      //     console.log("Error:", error.message);
+      //   }
+      // }
+      function runCode() {
+    output.innerHTML = ""; // Clear previous output
+    const code = editor.getValue();
+
+    try {
+        const result = compiler.execute(code);
+
+        // If code runs successfully
+        if (result.compiledCode) {
+            output.innerHTML += "✅ Code executed successfully!\n"; // Add success message
+            console.log(result.output); // Log the output if needed
+        }
+
+        // Check for specific compilation errors
+        if (result.error) {
+            console.log("Error:", result.error); // Log the error details
+        }
+    } catch (error) {
+        output.innerHTML += "❌ Code execution failed! Please check your syntax.\n";
+        console.log("Error:", error.message);
+    }
+}
+
+      function clearOutput() {
+        output.innerHTML = "";
+      }
+      const examples = {
+        init: `darsha("ha bhai maine hi banai hai lol")`,
+        basic: initialCode,
+        factorial: `
+// फ़ैक्टोरियल दिखाओ
+kriya factorial(n) {
+    yadi (n laghu 2) {
+        vapas 1;
+    }
+    vapas n * factorial(n - 1);
+}
+
+nishchit num samaan 5;
+darsha("Factorial of 5:");
+darsha(factorial(num));
+`,
+
+        fibonacci: `
+// फ़िबोन्नाची दिखाओ
+kriya fib(n) {
+    yadi(n laghu 2) {
+        vapas n;
+    }
+    vapas fib(n - 1) + fib(n - 2);
+}
+
+yaavat (sanchay i samaan 0; i laghu 8; i samaan i + 1) {
+    darsha(fib(i));
+}   `,
+      };
+
+      function loadExample(name) {
+        editor.setValue(examples[name]);
+      }
+
+      function populateKeywordReference() {
+        const grid = document.getElementById("keywordGrid");
+        Object.entries(compiler.keywords).forEach(([keyword, js]) => {
+          const item = document.createElement("div");
+          item.className = "keyword-item";
+          item.innerHTML = `<span style="color: #66CC00">${keyword}</span> <span> ${js}</span>`;
+          grid.appendChild(item);
+        });
+      }
+
+      populateKeywordReference();
+    </script>
+  </body>
+</html>
